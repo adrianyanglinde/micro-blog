@@ -1,5 +1,9 @@
 var express = require('express');
 var path = require('path');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+var MongoStore = require('connect-mongo');    //把会话信息存储在数据库中的模块
+var settings = require('../settings');      
 var routes = require('./routes');
 
 
@@ -10,6 +14,13 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(cookieParser());
+app.use(session({
+  secret: settings.cookieSecret,
+  store: new MongoStore({
+    db: settings.db
+  })
+}))
 app.use('/static',express.static(path.join(__dirname, 'public')));
 
 // routers
