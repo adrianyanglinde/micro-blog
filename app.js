@@ -2,8 +2,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
-var MongoStore = require('connect-mongo');    //把会话信息存储在数据库中的模块
-var settings = require('../settings');      
+var MongoStore = require('connect-mongo')(session);    //把会话信息存储在数据库中的模块
+var settings = require('./settings');      
 var routes = require('./routes');
 
 
@@ -18,7 +18,8 @@ app.use(cookieParser());
 app.use(session({
   secret: settings.cookieSecret,
   store: new MongoStore({
-    db: settings.db
+    db: settings.db,
+    url: 'mongodb://localhost/blog'
   })
 }))
 app.use('/static',express.static(path.join(__dirname, 'public')));
