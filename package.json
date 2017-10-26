@@ -13,5 +13,8 @@
     "express": "~4.13.4",
     "express-session": "^1.15.0",
     "mongodb": "^2.2.22"
+  },
+  "devDependencies": {
+    "debug": "^3.1.0"
   }
 }
