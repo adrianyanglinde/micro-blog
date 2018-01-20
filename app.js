@@ -1,10 +1,14 @@
 var express = require('express');
 var path = require('path');
+var bodyParser = require('body-parser');
+var multer = require('multer'); 
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var flash = require('connect-flash');
 var MongoStore = require('connect-mongo')(session);    //把会话信息存储在数据库中的模块
 var settings = require('./settings');      
 var routes = require('./routes');
+
 
 
 
@@ -14,15 +18,29 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+//app.use(multer());  for parsing multipart/form-data
 app.use(cookieParser());
 app.use(session({
   secret: settings.cookieSecret,
+  key: settings.db,
+  resave: true,  
+  saveUninitialized: true,  
   store: new MongoStore({
     db: settings.db,
     url: 'mongodb://localhost/blog'
   })
 }))
+app.use(flash());
 app.use('/static',express.static(path.join(__dirname, 'public')));
+
+//flash 
+//提示信息
+app.use(function(req,res,next){
+  res.locals.errors = req.flash('error')
+  next();
+})
 
 // routers
 // 将路由挂载至应用
