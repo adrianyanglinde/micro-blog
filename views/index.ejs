@@ -20,8 +20,12 @@
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li class="active"><a href="#">Home</a></li>
-              <li><a href="#login">Login</a></li>
-              <li><a href="#regist">Regist</a></li>
+              <% if (!user) { %>
+                  <li><a href="#login">Login</a></li>
+                  <li><a href="#regist">Regist</a></li>
+              <% }else{ %>
+                  <li><a href="#logout">Logout</a></li>
+              <% } %>
             </ul>
           </div><!--/.nav-collapse -->
         </div>

@@ -1,5 +1,6 @@
 var express = require('express');
 var flash = require('connect-flash');
+var User = require('./users');
 var router = express.Router();
 
 // var User = require('../models/user.js');
@@ -35,32 +36,32 @@ router.post('/reg', function(req, res, next) {
   }
 
   //新建用户
-  // var newUser = new User({
-  //   'name' : req.body.username,
-  //   'password' : req.body.password
-  // })
+  var newUser = new User({
+    'name' : req.body.username,
+    'password' : req.body.password
+  })
 
-  // //查询用户
-  // User.get(newUser.name,function(user,error){
-  //   if(user){
-  //     error = "Username already exists."
-  //   }
-  //   if(error){
-  //     req.flash('error',error)
-  //     return res.redirect('/reg')
-  //   }
+  //查询用户
+  User.get(newUser.name,function(user,error){
+    if(user){
+      error = "Username already exists."
+    }
+    if(error){
+      req.flash('error',error)
+      return res.redirect('/reg')
+    }
 
-  //   //新增用户
-  //   newUser.save(function(error){
-  //     if(error){
-  //       req.flash('error',error)
-  //       return res.redirect('/reg')
-  //     }
-  //     req.session.user = newUser;
-  //     req.flash('success','regist success!')
-  //     return res.redirect('/')
-  //   })
-  // })
+    //新增用户
+    newUser.save(function(error){
+      if(error){
+        req.flash('error',error)
+        return res.redirect('/reg')
+      }
+      req.session.user = newUser;  //向会话对象写入了当前用户的信息
+      req.flash('success','regist success!')
+      return res.redirect('/')
+    })
+  })
 
 });
 

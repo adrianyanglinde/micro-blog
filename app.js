@@ -6,7 +6,6 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var flash = require('connect-flash');
 var MongoStore = require('connect-mongo')(session);    //把会话信息存储在数据库中的模块
-var mysql      = require('mysql');
 var settings = require('./settings');      
 var routes = require('./routes');
 
@@ -16,12 +15,6 @@ var routes = require('./routes');
 
 var app = express();
 
-var connection = mysql.createConnection({
-  host     : 'localhost/blog',
-  user     : 'dbuser',
-  password : 's3kreee7'
-});
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -29,34 +22,57 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 //app.use(multer());  for parsing multipart/form-data
 app.use(cookieParser());
-connection.connect(function(err) {
-  if (err) {
-    console.error('error connecting: ' + err.stack);
-    return;
-  }
-
-  console.log('connected as id ' + connection.threadId);
-});
-// app.use(session({
-//   secret: settings.cookieSecret,
-//   key: settings.db,
-//   resave: true,
-//   saveUninitialized: true,
-//   store: new MongoStore({
-//     db: settings.db,
-//     url: 'mongodb://localhost/blog'
-//   })
-// }))
-
+app.use(session({
+  secret: settings.cookieSecret,
+  key: settings.db,
+  resave: true,
+  saveUninitialized: true,
+  store: new MongoStore({
+    db: settings.db,
+    url: 'mongodb://localhost/blog'
+  })
+}))
 app.use(flash());
 app.use('/static',express.static(path.join(__dirname, 'public')));
 
-//flash 
-//提示信息
+// //flash
+// //提示信息
+// app.use(function(req,res,next){
+//   res.locals.errors = req.flash('error')
+//   next();
+// });
+
+//视图
 app.use(function(req,res,next){
-  res.locals.errors = req.flash('error')
-  next();
-})
+    res.locals.user=req.session.user;
+
+    var err = req.flash('error');
+    var success = req.flash('success');
+
+    res.locals.error = err.length ? err : null;
+    res.locals.success = success.length ? success : null;
+
+    next();
+});
+
+/*app.dynamicHelpers({
+    user: function(req, res) {
+        return req.session.user;
+    },
+    error: function(req, res) {
+        var err = req.flash('error');if (err.length)
+            return err;
+        else
+            return null;
+    },
+    success: function(req, res) {
+        var succ = req.flash('success');
+        if (succ.length)
+            return succ;
+        else
+            return null;
+    },
+});*/
 
 // routers
 // 将路由挂载至应用
