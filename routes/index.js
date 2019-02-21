@@ -1,9 +1,8 @@
 var express = require('express');
 var flash = require('connect-flash');
-var User = require('./users');
+var User = require('../models/users');
 var router = express.Router();
 
-// var User = require('../models/user.js');
 
 
 /* GET home page. */
@@ -30,8 +29,7 @@ router.get('/reg', function(req, res, next) {
 router.post('/reg', function(req, res, next) {
 
   if(req.body['password'] != req.body['password-repeat']){
-    req.flash('error','两次输入口令不一样')
-    console.log("b");
+    req.flash('error','两次输入口令不一样');
     return res.redirect('/reg')
   }
 
@@ -39,7 +37,7 @@ router.post('/reg', function(req, res, next) {
   var newUser = new User({
     'name' : req.body.username,
     'password' : req.body.password
-  })
+  });
 
   //查询用户
   User.get(newUser.name,function(user,error){
@@ -47,20 +45,20 @@ router.post('/reg', function(req, res, next) {
       error = "Username already exists."
     }
     if(error){
-      req.flash('error',error)
+      req.flash('error',error);
       return res.redirect('/reg')
     }
 
     //新增用户
-    newUser.save(function(error){
+    /*newUser.save(function(error){
       if(error){
-        req.flash('error',error)
+        req.flash('error',error);
         return res.redirect('/reg')
       }
       req.session.user = newUser;  //向会话对象写入了当前用户的信息
-      req.flash('success','regist success!')
+      req.flash('success','regist success!');
       return res.redirect('/')
-    })
+    })*/
   })
 
 });

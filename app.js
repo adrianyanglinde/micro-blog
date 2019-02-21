@@ -31,16 +31,10 @@ app.use(session({
     db: settings.db,
     url: 'mongodb://localhost/blog'
   })
-}))
+}));
 app.use(flash());
 app.use('/static',express.static(path.join(__dirname, 'public')));
 
-// //flash
-// //提示信息
-// app.use(function(req,res,next){
-//   res.locals.errors = req.flash('error')
-//   next();
-// });
 
 //视图
 app.use(function(req,res,next){
@@ -55,24 +49,6 @@ app.use(function(req,res,next){
     next();
 });
 
-/*app.dynamicHelpers({
-    user: function(req, res) {
-        return req.session.user;
-    },
-    error: function(req, res) {
-        var err = req.flash('error');if (err.length)
-            return err;
-        else
-            return null;
-    },
-    success: function(req, res) {
-        var succ = req.flash('success');
-        if (succ.length)
-            return succ;
-        else
-            return null;
-    },
-});*/
 
 // routers
 // 将路由挂载至应用

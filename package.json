@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "dev2" : "node --inspect ./bin/www",
     "dev": "supervisor node --debug ./bin/www",
     "start": "node ./bin/www"
   },

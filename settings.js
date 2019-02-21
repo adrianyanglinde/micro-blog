@@ -2,8 +2,8 @@
 var settings = {
 	cookieSecret: 'microblogbyvoid',
 	db: 'microblog',                  /*数据库名称*/
-	host: 'localhost',                /*数据库地址*/
-	port: '20717',
-}
+	host: '127.0.0.1',                /*数据库地址*/
+	port: '27017',
+};
 
 module.exports = settings;
