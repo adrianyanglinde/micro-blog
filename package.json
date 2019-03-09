@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev2" : "node --inspect ./bin/www",
-    "dev": "supervisor node --debug ./bin/www",
+    "dev": "supervisor node --inspect --debug ./bin/www",
     "start": "node ./bin/www"
   },
   "dependencies": {

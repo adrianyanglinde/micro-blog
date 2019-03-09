@@ -38,7 +38,7 @@ app.use('/static',express.static(path.join(__dirname, 'public')));
 
 //视图
 app.use(function(req,res,next){
-    res.locals.user=req.session.user;
+    res.locals.user = req.session.user;
 
     var err = req.flash('error');
     var success = req.flash('success');

@@ -1,3 +1,12 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+
+
+<% if (success) { %>
+    <div class="alert alert-success">
+        <%= success %>
+    </div>
+<% } %>
+<% if (error) { %>
+    <div class="alert alert-error">
+        <%= error %>
+    </div>
+<% } %>
