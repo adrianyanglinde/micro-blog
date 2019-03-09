@@ -7,7 +7,7 @@ function User(user) {
 
 module.exports = User;
 
-User.prototype.save = function save(callback) {
+User.prototype.save = function(callback) {
 
   var user = {
     name: this.name,
@@ -22,6 +22,7 @@ User.prototype.save = function save(callback) {
         mongodb.close();
         return callback(err);
       }
+      // 为 name 属性添加索引
       collection.ensureIndex('name', {unique: true});
       collection.insert(user, {safe: true}, function(err, user) {
         mongodb.close();
@@ -31,7 +32,7 @@ User.prototype.save = function save(callback) {
   });
 };
 
-User.get = function get(username, callback) {
+User.get = function(username, callback) {
 
   mongodb.open(function(err, db) {
 

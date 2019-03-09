@@ -40,7 +40,7 @@ router.post('/reg', function(req, res, next) {
   });
 
   //查询用户
-  User.get(newUser.name,function(user,error){
+  User.get(newUser.name,function(error,user){
     if(user){
       error = "Username already exists."
     }
